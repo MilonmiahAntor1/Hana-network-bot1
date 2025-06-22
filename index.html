@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hana Web App</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #000;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: 80px;
+      text-align: center;
+    }
+    nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      background-color: #111;
+      padding: 10px 0;
+      border-top: 1px solid #333;
+    }
+    nav div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #aaa;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    nav div.active {
+      color: white;
+    }
+    nav div:hover {
+      color: white;
+    }
+    nav img {
+      width: 42px;
+      height: 42px;
+      margin-bottom: 4px;
+    }
+    nav div span {
+      font-size: 14px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <main id="main-content">
+    <h1>Welcome to Hana!</h1>
+  </main>
+  <nav>
+    <div class="active">
+      <img src="https://i.postimg.cc/T248v1HN/Screenshot-20250619-232311-1-1-1-1-1.png" alt="Home" />
+      <span>Home</span>
+    </div>
+    <div>
+      <img src="https://i.postimg.cc/xCmsrjkh/Screenshot-20250619-232311-1-1-1.png" alt="Earn" />
+      <span>Earn</span>
+    </div>
+    <div>
+      <img src="https://i.postimg.cc/Y0bYZTxT/Screenshot-20250620-222840-1-1-1-1.png" alt="Buy" />
+      <span>Buy</span>
+    </div>
+    <div>
+      <img src="https://i.postimg.cc/Wpk4yB5Z/Screenshot-20250620-222840-1-1.png" alt="Friends" />
+      <span>Friends</span>
+    </div>
+    <div>
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/trophy.png" alt="Top" />
+      <span>Top</span>
+    </div>
+    <div>
+      <img src="https://i.postimg.cc/CLwV4XXS/Screenshot-20250619-232332-1-1.png" alt="Wallet" />
+      <span>Wallet</span>
+    </div>
+  </nav>
+  <script>
+    const navItems = document.querySelectorAll("nav div");
+    const mainContent = document.getElementById("main-content");
+    navItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        navItems.forEach(i => i.classList.remove("active"));
+        item.classList.add("active");
+        const section = item.innerText.trim();
+        mainContent.innerHTML = `<h1>${section} Section</h1>`;
+      });
+    });
+  </script>
+</body>
+</html>
