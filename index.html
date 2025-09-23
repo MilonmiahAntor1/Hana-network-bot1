@@ -67,28 +67,32 @@
       font-weight: bold;
       margin-bottom: 10px;
     }
-    .coin-amount {
-      font-size: 40px;
+    .coin-box {
+      font-size: 32px;
       font-weight: bold;
+      margin-bottom: 25px;
     }
-    .coin-label {
-      font-size: 24px;
-      margin-bottom: 30px;
+    .coin-box span {
+      font-size: 20px;
+      font-weight: normal;
+      margin-left: 5px;
+      color: #ccc;
     }
     .button {
       width: 90%;
-      max-width: 400px;
+      max-width: 350px;
       background-color: #111;
       border: 1px solid #444;
-      border-radius: 10px;
-      padding: 15px 20px;
-      margin: 10px 0;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin: 6px 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
       color: white;
       text-decoration: none;
       transition: background 0.3s ease;
+      font-size: 12px;
     }
     .button:hover {
       background-color: #222;
@@ -96,17 +100,17 @@
     .icon-label {
       display: flex;
       align-items: center;
-      gap: 15px;
-      font-size: 18px;
+      gap: 8px;
+      font-size: 13px;
     }
     .icon-label i {
-      font-size: 20px;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
   <main id="main-content">
-    <h1>Welcome to Hana!</h1>
+    <!-- Content will be loaded here -->
   </main>
   <nav>
     <div class="active">
@@ -134,54 +138,56 @@
       <span>Wallet</span>
     </div>
   </nav>
+
   <script>
     const navItems = document.querySelectorAll("nav div");
     const mainContent = document.getElementById("main-content");
 
+    function loadSection(section) {
+      if(section === "Home") {
+        mainContent.innerHTML = `
+          <div class="title">HANA</div>
+          <div class="coin-box">0000 <span>coin</span></div>
+
+          <a href="https://t.me/Hanabotcommunity" class="button" target="_blank">
+            <div class="icon-label"><i class="fab fa-telegram"></i> Join our Telegram</div>
+            <i class="fas fa-chevron-right"></i>
+          </a>
+
+          <a href="https://www.facebook.com/share/17CYTaBUYc/" class="button" target="_blank">
+            <div class="icon-label"><i class="fab fa-facebook-f"></i> Follow our Facebook</div>
+            <i class="fas fa-chevron-right"></i>
+          </a>
+
+          <a href="https://www.youtube.com/@Hanacommunity" class="button" target="_blank">
+            <div class="icon-label"><i class="fab fa-youtube"></i> Subscribe our YouTube</div>
+            <i class="fas fa-chevron-right"></i>
+          </a>
+
+          <a href="https://x.com/Hanacommiunity?t=YqxxHvodjUnJHbo1USz75A&s=09" class="button" target="_blank">
+            <div class="icon-label"><i class="fab fa-x-twitter"></i> Follow our X</div>
+            <i class="fas fa-chevron-right"></i>
+          </a>
+
+          <a href="https://www.instagram.com/hanacommunnity?igsh=dDBjZDA0YnV5dnAz" class="button" target="_blank">
+            <div class="icon-label"><i class="fab fa-instagram"></i> Join our Instagram</div>
+            <i class="fas fa-chevron-right"></i>
+          </a>
+        `;
+      } else {
+        mainContent.innerHTML = `<h1>${section} Section</h1>`;
+      }
+    }
+
     navItems.forEach((item) => {
       item.addEventListener("click", () => {
-        navItems.forEach(i => i.classList.remove("active"));
+        navItems.forEach((nav) => nav.classList.remove("active"));
         item.classList.add("active");
-        const section = item.innerText.trim();
-
-        if(section === "Home") {
-          // Home section content (HANA Coin Page)
-          mainContent.innerHTML = `
-            <div class="title">HANA</div>
-            <div class="coin-amount">0000</div>
-            <div class="coin-label">COIN</div>
-
-            <a href="https://t.me/Hanabotcommunity" class="button" target="_blank">
-              <div class="icon-label"><i class="fab fa-telegram"></i> Join our Telegram</div>
-              <i class="fas fa-chevron-right"></i>
-            </a>
-
-            <a href="https://www.facebook.com/share/17CYTaBUYc/" class="button" target="_blank">
-              <div class="icon-label"><i class="fab fa-facebook-f"></i> Follow our Facebook</div>
-              <i class="fas fa-chevron-right"></i>
-            </a>
-
-            <a href="https://www.youtube.com/@Hanacommunity" class="button" target="_blank">
-              <div class="icon-label"><i class="fab fa-youtube"></i> Subscribe our YouTube</div>
-              <i class="fas fa-chevron-right"></i>
-            </a>
-
-            <a href="https://x.com/Hanacommiunity?t=YqxxHvodjUnJHbo1USz75A&s=09" class="button" target="_blank">
-              <div class="icon-label"><i class="fab fa-x-twitter"></i> Follow our X</div>
-              <i class="fas fa-chevron-right"></i>
-            </a>
-
-            <a href="https://www.instagram.com/hanacommunnity?igsh=dDBjZDA0YnV5dnAz" class="button" target="_blank">
-              <div class="icon-label"><i class="fab fa-instagram"></i> Join our Instagram</div>
-              <i class="fas fa-chevron-right"></i>
-            </a>
-          `;
-        } else {
-          // Other sections
-          mainContent.innerHTML = `<h1>${section} Section</h1>`;
-        }
+        loadSection(item.innerText.trim());
       });
     });
+
+    loadSection("Home");
   </script>
 </body>
 </html>
