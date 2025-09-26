@@ -25,6 +25,7 @@
       text-align: center;
       flex-direction: column;
       overflow-y: auto;
+      width: 100%;
     }
 
     nav {
@@ -106,12 +107,78 @@
     .icon-label i {
       font-size: 14px;
     }
+
+    /* Earn section (Tasks Page) */
+    .tasks-container {
+      padding: 20px;
+      width: 100%;
+      max-width: 500px;
+      text-align: left;
+    }
+    .tasks-container .title {
+      font-size: 32px;
+      font-weight: 900;
+      margin: 0 0 8px 0;
+    }
+    .subtitle {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 0;
+      line-height: 1.4;
+    }
+    .subtitle .highlight {
+      color: #fff;
+      font-weight: 900;
+    }
+    .subtitle .faded {
+      color: #666;
+      font-weight: 600;
+    }
+    .line-break {
+      display: block;
+      margin-top: 4px;
+    }
+    .tabs {
+      margin-top: 20px;
+      display: flex;
+      background: #111;
+      border-radius: 12px;
+      padding: 5px;
+      gap: 5px;
+    }
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 12px 0;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .tab.active {
+      background: #fff;
+      color: #000;
+    }
+    .tab:not(.active) {
+      background: transparent;
+      color: #fff;
+    }
+    .tab:not(.active):hover {
+      background: #222;
+    }
+
+    /* Earn section-specific layout override */
+    .earn-active {
+      justify-content: flex-start !important;
+      align-items: flex-start !important;
+      text-align: left !important;
+    }
   </style>
 </head>
 <body>
-  <main id="main-content">
-    <!-- Content will be loaded here -->
-  </main>
+  <main id="main-content"></main>
+
   <nav>
     <div class="active">
       <img src="https://i.postimg.cc/T248v1HN/Screenshot-20250619-232311-1-1-1-1-1.png" alt="Home" />
@@ -144,6 +211,8 @@
     const mainContent = document.getElementById("main-content");
 
     function loadSection(section) {
+      mainContent.classList.remove("earn-active"); // remove if switching back
+
       if(section === "Home") {
         mainContent.innerHTML = `
           <div class="title">HANA</div>
@@ -174,6 +243,33 @@
             <i class="fas fa-chevron-right"></i>
           </a>
         `;
+      } else if (section === "Earn") {
+        mainContent.classList.add("earn-active"); // make content start from top
+        mainContent.innerHTML = `
+          <div class="tasks-container">
+            <div class="title">TASKS</div>
+            <p class="subtitle">
+              <span class="highlight">GET REWARDS</span>
+              <span class="faded">FOR</span>
+              <span class="line-break faded">COMPLETING QUESTS</span>
+            </p>
+
+            <div class="tabs">
+              <div class="tab active">In-game</div>
+              <div class="tab">Partners</div>
+              <div class="tab">Limited</div>
+            </div>
+          </div>
+        `;
+
+        const tabs = mainContent.querySelectorAll(".tab");
+        tabs.forEach(tab => {
+          tab.addEventListener("click", () => {
+            tabs.forEach(t => t.classList.remove("active"));
+            tab.classList.add("active");
+          });
+        });
+
       } else {
         mainContent.innerHTML = `<h1>${section} Section</h1>`;
       }
