@@ -174,6 +174,64 @@
       align-items: flex-start !important;
       text-align: left !important;
     }
+
+    /* Friends referral design */
+    .wrap{max-width:460px;margin:28px auto;padding:28px 20px}
+    .header{ text-align:center; margin-bottom:20px }
+    .header h1{font-size:32px;margin:6px 0;font-weight:800;letter-spacing:-1px}
+    .header p{color:#aaa;margin:0 0 16px;font-size:14px}
+    .card{
+      background:#111;
+      border-radius:14px;
+      padding:16px;
+      border:1px solid rgba(255,255,255,0.04);
+      margin-bottom:14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      cursor:default;
+    }
+    .card .left{display:flex;gap:12px;align-items:center}
+    .dot{
+      width:56px;height:56px;border-radius:12px;
+      background:rgba(255,255,255,0.06);
+      display:flex;align-items:center;justify-content:center;
+      font-size:26px;
+    }
+    .dot img{width:32px;height:32px;object-fit:contain;}
+    .card h3{margin:0;font-size:17px}
+    .card p{margin:2px 0 0;color:#aaa;font-size:13px}
+    .reward{font-weight:800;font-size:18px}
+    .referral-box{
+      width:100%;
+      padding:12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.2);
+      background:rgba(255,255,255,0.05);
+      color:#fff;
+      font-size:14px;
+      margin-bottom:14px;
+    }
+    .invite-area{display:flex;gap:12px;align-items:center}
+    .invite-btn{
+      flex:1;padding:14px;border-radius:14px;
+      background:linear-gradient(90deg,#7b4bff,#8f6bff);
+      border:none;color:white;font-weight:800;font-size:18px;cursor:pointer;
+    }
+    .square{
+      width:56px;height:56px;border-radius:12px;
+      background:rgba(255,255,255,0.06);
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;
+    }
+    .footer{margin-top:18px;color:#aaa;font-size:13px;text-align:center}
+    .toast{
+      position:fixed;left:50%;transform:translateX(-50%);
+      bottom:28px;background:#0e0b12;padding:12px 18px;border-radius:10px;
+      border:1px solid rgba(255,255,255,0.04);
+      display:none;
+      z-index:999;
+    }
   </style>
 </head>
 <body>
@@ -206,12 +264,13 @@
     </div>
   </nav>
 
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script>
     const navItems = document.querySelectorAll("nav div");
     const mainContent = document.getElementById("main-content");
 
     function loadSection(section) {
-      mainContent.classList.remove("earn-active"); // remove if switching back
+      mainContent.classList.remove("earn-active");
 
       if(section === "Home") {
         mainContent.innerHTML = `
@@ -244,7 +303,7 @@
           </a>
         `;
       } else if (section === "Earn") {
-        mainContent.classList.add("earn-active"); // make content start from top
+        mainContent.classList.add("earn-active");
         mainContent.innerHTML = `
           <div class="tasks-container">
             <div class="title">TASKS</div>
@@ -270,6 +329,89 @@
           });
         });
 
+      } else if (section === "Friends") {
+        mainContent.innerHTML = `
+          <div class="wrap">
+            <div class="header">
+              <h1>Invite Friends</h1>
+              <p>You and your friend will receive bonus points</p>
+            </div>
+
+            <div class="card">
+              <div class="left">
+                <div class="dot">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
+                </div>
+                <div>
+                  <h3>Invite a friend</h3>
+                  <p class="muted">+2,500 for you and your friend</p>
+                </div>
+              </div>
+              <div class="reward">+2,500</div>
+            </div>
+
+            <div class="card">
+              <div class="left">
+                <div class="dot">⭐</div>
+                <div>
+                  <h3>Invite a friend with Telegram Premium</h3>
+                  <p class="muted">+10,000 for you and your friend</p>
+                </div>
+              </div>
+              <div class="reward">+10,000</div>
+            </div>
+
+            <input type="text" id="referralBox" class="referral-box" readonly value="Loading...">
+
+            <div class="invite-area">
+              <button class="invite-btn" id="inviteBtn">Invite a friend</button>
+              <div class="square" id="shareBtn" title="Share">🔗</div>
+            </div>
+
+            <div class="footer">Share your referral link with friends and earn rewards. Terms apply.</div>
+
+            <div class="card" onclick="alert('Referrals list not yet implemented')">
+              <div class="left">
+                <div class="dot">👥</div>
+                <div>
+                  <h3>Referrals list</h3>
+                </div>
+              </div>
+              <div style="font-size:20px;font-weight:700">›</div>
+            </div>
+          </div>
+
+          <div class="toast" id="toast">Referral link copied to clipboard</div>
+        `;
+
+        let userId = "guest";
+        if (Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.user) {
+          userId = Telegram.WebApp.initDataUnsafe.user.id;
+        }
+        const referralLink = "https://t.me/Hananetworkbot?start=" + userId;
+
+        const referralBox = document.getElementById("referralBox");
+        referralBox.value = referralLink;
+
+        const inviteBtn = document.getElementById("inviteBtn");
+        const shareBtn = document.getElementById("shareBtn");
+        const toast = document.getElementById("toast");
+
+        function showToast(msg) {
+          toast.innerText = msg;
+          toast.style.display = "block";
+          setTimeout(() => toast.style.display = "none", 2000);
+        }
+
+        inviteBtn.onclick = () => {
+          navigator.clipboard.writeText(referralLink);
+          showToast("Referral link copied!");
+        };
+
+        shareBtn.onclick = () => {
+          navigator.clipboard.writeText(referralLink);
+          showToast("Referral link copied!");
+        };
       } else {
         mainContent.innerHTML = `<h1>${section} Section</h1>`;
       }
